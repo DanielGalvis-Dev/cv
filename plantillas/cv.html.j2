@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="es" data-paleta="{{ p.paleta }}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ p.nombre }} · Hoja de vida</title>
+<meta name="description" content="Hoja de vida de {{ p.nombre }}. {{ p.rol }}">
+<link rel="stylesheet" href="../assets/css/cv.css">
+<script>
+  // Aplica la paleta guardada antes de pintar, para que no parpadee.
+  (function () {
+    var q = new URLSearchParams(location.search).get("paleta");
+    var g = null; try { g = localStorage.getItem("paleta-{{ p.slug }}"); } catch (e) {}
+    var v = q || g;
+    if (v) document.documentElement.setAttribute("data-paleta", v);
+  })();
+</script>
+</head>
+<body data-slug="{{ p.slug }}">
+
+<nav class="barra" aria-label="Opciones">
+  <a class="volver" href="../">← Hojas de vida</a>
+  <div class="paletas" role="group" aria-label="Paleta de colores">
+    {%- for pal in paletas %}
+    <button type="button" data-p="{{ pal.id }}" style="--a:{{ pal.tapa }};--b:{{ pal.movimiento }}" aria-label="Paleta {{ pal.nombre }}" title="{{ pal.nombre }}"></button>
+    {%- endfor %}
+  </div>
+  <a class="descargar" href="../pdf/{{ p.slug }}-{{ p.paleta }}.pdf" download>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg>
+    Descargar PDF
+  </a>
+</nav>
+
+<main class="hoja">
+
+  <aside class="tapa" aria-label="Datos personales">
+    <div class="godet"><img src="../assets/img/{{ p.foto }}" alt="Foto de {{ p.nombre }}" width="380" height="380"></div>
+    <h1 class="nombre">{{ p.nombre }}</h1>
+    <p class="rol">{{ p.rol | pend }}</p>
+    {%- if p.en_curso %}
+    <p class="rumbo"><span class="pan chica mov" aria-hidden="true"></span>{{ p.en_curso | pend }}</p>
+    {%- endif %}
+
+    <h2>Contacto</h2>
+    <ul class="contacto">
+      {%- set c = p.contacto %}
+      {%- if c.telefono %}<li><span>Teléfono</span><a href="tel:{{ c.telefono | replace(' ', '') }}">{{ c.telefono }}</a></li>{% endif %}
+      {%- if c.correo %}<li><span>Correo</span><a href="mailto:{{ c.correo }}">{{ c.correo }}</a></li>{% endif %}
+      {%- if c.linkedin %}<li><span>LinkedIn</span><a href="https://www.linkedin.com/in/{{ c.linkedin }}">linkedin.com/in/{{ c.linkedin }}</a></li>{% endif %}
+      {%- if c.github %}<li><span>GitHub</span><a href="https://github.com/{{ c.github }}">github.com/{{ c.github }}</a></li>{% endif %}
+      {%- if c.ciudad %}<li><span>Ciudad</span><strong>{{ c.ciudad }}</strong></li>{% endif %}
+    </ul>
+
+    {%- for bloque in p.tapa %}
+    <h2>{{ bloque.titulo }}</h2>
+    <ul class="grupos">
+      {%- for g in bloque.grupos %}
+      <li><b>{{ g.nombre }}</b>{{ g.texto | pend }}</li>
+      {%- endfor %}
+    </ul>
+    {%- endfor %}
+
+    <h2>Idiomas</h2>
+    <ul class="idiomas">
+      {%- for i in p.idiomas %}
+      <li>{{ i.idioma }} <em>{{ i.nivel }}</em></li>
+      {%- endfor %}
+    </ul>
+  </aside>
+
+  <div class="carta">
+
+    <section class="seccion perfil" aria-labelledby="t-perfil">
+      <h2 id="t-perfil"><span class="pan t1" aria-hidden="true"></span>Perfil</h2>
+      <p>{{ p.perfil | pend }}</p>
+    </section>
+
+    <section class="seccion" aria-labelledby="t-experiencia">
+      <h2 id="t-experiencia"><span class="pan t2" aria-hidden="true"></span>Experiencia</h2>
+      <div class="entradas">
+        {%- for e in p.experiencia %}
+        <article class="entrada">
+          <header>
+            <h3>{{ e.cargo | pend }}</h3>
+            <span class="fecha">{{ e.fecha | pend }}</span>
+            <span class="lugar">{{ e.lugar | pend }}</span>
+          </header>
+          <ul>
+            {%- for punto in e.puntos %}
+            <li>{{ punto | pend }}</li>
+            {%- endfor %}
+          </ul>
+        </article>
+        {%- endfor %}
+      </div>
+    </section>
+
+    <section class="seccion" aria-labelledby="t-educacion">
+      <h2 id="t-educacion"><span class="pan t3" aria-hidden="true"></span>Educación</h2>
+      <div class="entradas estudios">
+        {%- for e in p.educacion %}
+        <div class="entrada">
+          <header>
+            <h3>{% if e.enlace %}<a href="{{ e.enlace }}" title="Ver certificado">{{ e.titulo }}</a>{% else %}{{ e.titulo }}{% endif %}</h3>
+            <span class="fecha">{{ e.fecha | pend }}</span>
+            <span class="lugar">{{ e.institucion }}</span>
+          </header>
+        </div>
+        {%- endfor %}
+      </div>
+    </section>
+
+    {%- if p.formacion %}
+    <section class="seccion" aria-labelledby="t-formacion">
+      <h2 id="t-formacion"><span class="pan t4" aria-hidden="true"></span>{{ p.formacion_titulo or "Formación complementaria" }}</h2>
+      <div class="entradas estudios">
+        {%- for f in p.formacion %}
+        <div class="entrada{% if f.en_curso %} en-curso{% endif %}">
+          <header>
+            <h3>{% if f.en_curso %}<span class="pan chica mov" aria-hidden="true"></span>{% endif %}{% if f.enlace %}<a href="{{ f.enlace }}" title="Ver certificado">{{ f.titulo }}</a>{% else %}{{ f.titulo }}{% endif %}</h3>
+            {%- if f.fecha %}<span class="fecha">{{ f.fecha }}</span>{% endif %}
+            {%- if f.detalle %}<span class="lugar">{{ f.detalle | pend }}</span>{% endif %}
+          </header>
+        </div>
+        {%- endfor %}
+      </div>
+    </section>
+    {%- endif %}
+
+  </div>
+</main>
+
+{%- if p.tiene_enlaces %}
+<p class="pie">Los títulos subrayados enlazan a sus certificados.</p>
+{%- endif %}
+
+<script src="../assets/js/paletas.js"></script>
+</body>
+</html>

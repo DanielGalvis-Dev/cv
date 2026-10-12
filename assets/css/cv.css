@@ -1,0 +1,310 @@
+/* Carta de tonos: hoja de vida en dos presentaciones.
+   Pantalla: amplia y adaptable. Impresión (@media print): compacta, una hoja carta. */
+
+@font-face {
+  font-family: "Bodoni Moda";
+  src: url("../fonts/BodoniModa.ttf") format("truetype");
+  font-weight: 400 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Hanken Grotesk";
+  src: url("../fonts/HankenGrotesk.ttf") format("truetype");
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+/* ---------- Paletas ---------- */
+/* --tapa: columna izquierda. --movimiento: único color para lo que está en curso. */
+:root,
+[data-paleta="ciruela"] {
+  --tapa: #3B1F35; --tapa-texto: #E8D6E0; --tapa-tenue: #C9AABB; --tapa-blanco: #FBF3F6;
+  --movimiento: #A3335A; --movimiento-tapa: #F4C6D6;
+  --tono-1: #E9C9D1; --tono-2: #6B2D4F; --tono-3: #B97C93; --tono-4: #D8B4A6;
+  --hoja: #F6F1F3; --tinta: #2B2530; --tinta-suave: #5E4F5A; --linea: #E3D5DC;
+  --pendiente: #765B6A; --fondo-pantalla: #D9CCD3;
+}
+[data-paleta="esmeralda"] {
+  --tapa: #183D35; --tapa-texto: #DCEBE3; --tapa-tenue: #A9C4B8; --tapa-blanco: #F4FAF6;
+  --movimiento: #B8325C; --movimiento-tapa: #F5B8C9;
+  --tono-1: #CFE3D6; --tono-2: #2F6B5C; --tono-3: #8FB3A3; --tono-4: #DCCDB0;
+  --hoja: #F3F6F3; --tinta: #22302C; --tinta-suave: #4F5F59; --linea: #D9E3DC;
+  --pendiente: #5F6F69; --fondo-pantalla: #CBD8D0;
+}
+[data-paleta="medianoche"] {
+  --tapa: #1C2A4D; --tapa-texto: #DCE2F2; --tapa-tenue: #A6B2D6; --tapa-blanco: #F5F7FD;
+  --movimiento: #0E7A70; --movimiento-tapa: #8FE0D5;
+  --tono-1: #D3DAF0; --tono-2: #34509E; --tono-3: #8E9DD0; --tono-4: #DCCBA6;
+  --hoja: #F3F4F9; --tinta: #222638; --tinta-suave: #4F566E; --linea: #DCE0EE;
+  --pendiente: #5D637A; --fondo-pantalla: #CCD2E3;
+}
+[data-paleta="lavanda"] {
+  --tapa: #2B2A33; --tapa-texto: #E7E5EE; --tapa-tenue: #B3B0BF; --tapa-blanco: #F7F6FB;
+  --movimiento: #7A3FD1; --movimiento-tapa: #CDB5F5;
+  --tono-1: #E2D9F2; --tono-2: #5B4A8A; --tono-3: #A898CF; --tono-4: #CFC9BD;
+  --hoja: #F5F4F8; --tinta: #26252C; --tinta-suave: #55535F; --linea: #E2E0EA;
+  --pendiente: #67646F; --fondo-pantalla: #D6D3DE;
+}
+[data-paleta="petroleo"] {
+  --tapa: #0F3B47; --tapa-texto: #D9EBEE; --tapa-tenue: #9CC0C7; --tapa-blanco: #F3FAFB;
+  --movimiento: #C2305F; --movimiento-tapa: #FFB8A1;
+  --tono-1: #CDE5E7; --tono-2: #2B6E7C; --tono-3: #8DBCC3; --tono-4: #F0C4A5;
+  --hoja: #F2F6F7; --tinta: #1F2E33; --tinta-suave: #4C5E64; --linea: #D8E4E7;
+  --pendiente: #5A6B70; --fondo-pantalla: #C8D8DC;
+}
+
+:root {
+  --display: "Bodoni Moda", "Didot", serif;
+  --texto: "Hanken Grotesk", system-ui, sans-serif;
+  --suave: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ---------- Base (pantalla) ---------- */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { background: var(--fondo-pantalla); transition: background-color 0.4s var(--suave); }
+
+body {
+  font-family: var(--texto);
+  color: var(--tinta);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection { background: var(--tono-1); color: var(--tapa); }
+a { color: inherit; text-underline-offset: 3px; }
+a:focus-visible, button:focus-visible { outline: 2px solid var(--movimiento); outline-offset: 3px; border-radius: 3px; }
+
+/* Barra superior (solo pantalla) */
+.barra {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 18px 24px 0;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  font-size: 14px;
+}
+.barra .volver { color: var(--tinta-suave); text-decoration: none; margin-right: auto; }
+.barra .volver:hover { color: var(--tinta); text-decoration: underline; }
+
+.paletas { display: flex; gap: 8px; }
+.paletas button {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 0;
+  cursor: pointer;
+  background: conic-gradient(var(--a) 0 50%, var(--b) 0 100%);
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.55);
+  transition: transform 0.2s var(--suave);
+}
+.paletas button:hover { transform: scale(1.12); }
+.paletas button[aria-pressed="true"] { outline: 2px solid var(--tinta); outline-offset: 2px; }
+
+.descargar {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 18px;
+  border-radius: 999px;
+  background: var(--tapa);
+  color: var(--tapa-blanco);
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 6px 16px -8px color-mix(in srgb, var(--tapa) 70%, transparent);
+  transition: transform 0.2s var(--suave), background-color 0.4s var(--suave);
+}
+.descargar:hover { transform: translateY(-1px); }
+.descargar svg { width: 16px; height: 16px; }
+
+/* La hoja */
+.hoja {
+  max-width: 1120px;
+  margin: 18px auto 48px;
+  display: grid;
+  grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
+  background: var(--hoja);
+  box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.35);
+  transition: background-color 0.4s var(--suave);
+}
+
+/* Tapa */
+.tapa {
+  background: var(--tapa);
+  color: var(--tapa-texto);
+  padding: 56px 36px 48px 40px;
+  transition: background-color 0.4s var(--suave);
+}
+
+.godet {
+  width: 190px;
+  height: 190px;
+  border-radius: 50%;
+  padding: 6px;
+  background: var(--tono-1);
+  box-shadow: 0 8px 20px -8px rgba(0, 0, 0, 0.55);
+  margin-bottom: 36px;
+}
+.godet img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; object-position: 50% 22%; display: block; }
+
+.nombre {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 40px;
+  line-height: 1.04;
+  letter-spacing: -0.01em;
+  color: var(--tapa-blanco);
+  text-wrap: balance;
+}
+.rol { margin-top: 16px; font-size: 16px; line-height: 1.45; }
+.rumbo { margin-top: 14px; display: flex; align-items: flex-start; gap: 9px; font-weight: 600; color: var(--movimiento-tapa); }
+.rumbo .pan { margin-top: 5px; }
+
+.tapa h2 {
+  font-family: var(--display);
+  font-weight: 500;
+  font-size: 21px;
+  color: var(--tapa-blanco);
+  margin: 38px 0 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid color-mix(in srgb, var(--tapa-texto) 22%, transparent);
+}
+.tapa ul { list-style: none; display: grid; gap: 10px; }
+.contacto li { display: grid; }
+.contacto span { color: var(--tapa-tenue); font-size: 13px; }
+.contacto a, .contacto strong { color: var(--tapa-blanco); font-weight: 500; text-decoration: none; overflow-wrap: anywhere; }
+.contacto a:hover { text-decoration: underline; }
+.grupos li { line-height: 1.45; }
+.grupos b { display: block; font-weight: 600; color: var(--tapa-blanco); }
+.idiomas li { display: flex; justify-content: space-between; gap: 12px; }
+.idiomas em { font-style: normal; color: var(--tapa-tenue); }
+
+/* Muestras de pigmento */
+.pan {
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--tono);
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.5), 0 1px 2px color-mix(in srgb, var(--tapa) 28%, transparent);
+  transition: background-color 0.4s var(--suave);
+}
+.pan.chica { width: 13px; height: 13px; box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.45); }
+.pan.t1 { --tono: var(--tono-1); }
+.pan.t2 { --tono: var(--tono-2); }
+.pan.t3 { --tono: var(--tono-3); }
+.pan.t4 { --tono: var(--tono-4); }
+.pan.mov { --tono: var(--movimiento); }
+
+/* Cuerpo */
+.carta { padding: 56px 56px 48px 52px; display: flex; flex-direction: column; gap: 38px; }
+
+.seccion > h2 {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 27px;
+  line-height: 1.1;
+  color: var(--tapa);
+  margin-bottom: 16px;
+}
+.seccion > h2::after { content: ""; flex: 1; height: 1px; background: var(--linea); margin-left: 6px; }
+
+.perfil p { max-width: 68ch; font-size: 17px; line-height: 1.62; }
+
+.entradas { padding-left: 34px; display: grid; gap: 22px; }
+.entrada header { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 16px; align-items: baseline; }
+.entrada h3 { font-size: 17.5px; font-weight: 700; color: var(--tapa); line-height: 1.35; }
+.entrada .lugar { grid-column: 1; color: var(--tinta-suave); font-size: 15px; }
+.entrada .fecha { grid-row: 1; grid-column: 2; font-size: 14px; color: var(--tinta-suave); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.entrada ul { list-style: none; margin-top: 8px; display: grid; gap: 5px; }
+.entrada li { position: relative; padding-left: 16px; max-width: 72ch; }
+.entrada li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.68em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--tono-3);
+}
+.entrada a.cert { color: var(--tapa); font-size: 13.5px; font-weight: 600; }
+
+.estudios { gap: 14px; }
+.estudios .entrada h3 { font-size: 16.5px; }
+.en-curso h3 { color: var(--movimiento); display: flex; align-items: center; gap: 9px; }
+
+.pendiente {
+  color: var(--pendiente);
+  border-bottom: 1px dashed color-mix(in srgb, var(--pendiente) 55%, transparent);
+}
+.tapa .pendiente { color: var(--tapa-tenue); }
+
+.pie { max-width: 1120px; margin: -28px auto 40px; padding: 0 24px; font-size: 13px; color: var(--tinta-suave); }
+
+@media screen and (max-width: 760px) {
+  .barra { flex-wrap: wrap; padding: 14px 16px 0; }
+  .hoja { grid-template-columns: minmax(0, 1fr); margin: 14px 0 32px; box-shadow: none; }
+  .tapa { padding: 36px 24px; }
+  .godet { width: 150px; height: 150px; margin-bottom: 26px; }
+  .nombre { font-size: 34px; }
+  .carta { padding: 36px 22px; gap: 30px; }
+  .entradas { padding-left: 0; }
+  .entrada header { grid-template-columns: minmax(0, 1fr); }
+  .entrada .fecha { grid-row: auto; grid-column: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
+}
+
+/* ---------- Impresión: compacta, una hoja carta ---------- */
+@page { size: 8.5in 11in; margin: 0; }
+
+@media print {
+  html { background: none; }
+  body { font-size: 9.5pt; line-height: 1.36; }
+  .barra, .pie, .solo-pantalla { display: none !important; }
+
+  .hoja {
+    width: 8.5in;
+    min-height: 11in;
+    max-width: none;
+    margin: 0;
+    grid-template-columns: 2.72in 1fr;
+    box-shadow: none;
+    /* Sin overflow oculto: si el contenido no cabe, sale una 2.ª página y build.py falla. */
+  }
+  .tapa { padding: 0.42in 0.34in 0.3in 0.4in; }
+  .godet { width: 1.5in; height: 1.5in; padding: 5px; margin-bottom: 0.26in; }
+  .nombre { font-size: 25pt; }
+  .rol { margin-top: 0.14in; font-size: 10pt; line-height: 1.35; }
+  .rumbo { margin-top: 0.12in; font-size: 9.4pt; gap: 7px; }
+  .rumbo .pan { margin-top: 3px; }
+  .tapa h2 { font-size: 12.5pt; margin: 0.24in 0 0.07in; padding-bottom: 0.05in; }
+  .tapa ul { gap: 0.06in; }
+  .contacto span { font-size: 8.2pt; }
+  .grupos li { line-height: 1.38; }
+
+  .pan { width: 0.2in; height: 0.2in; }
+  .pan.chica { width: 0.13in; height: 0.13in; }
+
+  .carta { padding: 0.42in 0.5in 0.3in 0.46in; gap: 0.18in; }
+  .seccion > h2 { font-size: 14.5pt; gap: 9px; margin-bottom: 0.08in; }
+  .perfil p { font-size: 9.6pt; line-height: 1.42; max-width: none; }
+  .entradas { padding-left: 0.29in; gap: 0.08in; }
+  .estudios { gap: 0.06in; }
+  .entrada h3, .estudios .entrada h3 { font-size: 10.4pt; }
+  .entrada .lugar { font-size: 9.2pt; }
+  .entrada .fecha { font-size: 8.8pt; }
+  .entrada ul { margin-top: 0.03in; gap: 0.015in; }
+  .entrada li { padding-left: 12px; max-width: none; }
+  .entrada li::before { width: 4px; height: 4px; top: 0.62em; }
+  .entrada a.cert { font-size: 8.4pt; }
+  .pendiente { white-space: nowrap; }
+}

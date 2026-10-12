@@ -1,0 +1,81 @@
+# Contenido público de la hoja de vida de Daniel.
+# Fuente: _data/data.yml del repo anterior danielgalvis-dev/online-cv (2026-10-12).
+# Cambios de redacción sin datos nuevos: viñetas sin gerundio final, perfil con logros concretos,
+# habilidades sin porcentajes. Pendiente: base de conocimiento propia y competencias blandas con evidencia.
+slug: daniel
+nombre: Daniel de Jesús Galvis Zambrano
+rol: Analista desarrollador de software. Automatización, desarrollo web y visualización de datos.
+en_curso: Cursando 8.º semestre de Ingeniería de Sistemas
+foto: daniel.jpg
+paleta: medianoche
+
+contacto:
+  telefono: "+57 300 618 8395"
+  correo: daniel.galvis.dev@gmail.com
+  linkedin: danielgalvis-dev
+  github: DanielGalvis-Dev
+
+tapa:
+  - titulo: Tecnologías
+    grupos:
+      - nombre: Frontend
+        texto: HTML, CSS, JavaScript, TypeScript, Angular, Tailwind CSS, Bootstrap.
+      - nombre: Backend y datos
+        texto: Node.js, Nest.js, PHP, MySQL, APIs REST.
+      - nombre: Herramientas
+        texto: Git y GitHub.
+
+idiomas:
+  - idioma: Español
+    nivel: Nativo
+  - idioma: Inglés
+    nivel: Intermedio (B1)
+
+perfil: >-
+  Desarrollador de software con experiencia en automatización de procesos, desarrollo web y
+  visualización de datos. En el Centro Nacional Colombo Alemán construí una plataforma de monitoreo
+  de sensores en tiempo real, optimicé bases de datos MySQL y llevé al equipo a trabajar con Git.
+  Curso octavo semestre de Ingeniería de Sistemas.
+
+experiencia:
+  - cargo: Analista Desarrollador de Software
+    lugar: Centro Nacional Colombo Alemán
+    fecha: 2023 – 2024
+    puntos:
+      - Desarrollé una plataforma de monitoreo que integra en tiempo real los datos de sensores, con foco en disponibilidad y consultas eficientes.
+      - Optimicé bases de datos MySQL en entornos de alta concurrencia; el rendimiento de las consultas mejoró un 30 %.
+      - Diseñé integraciones con terceros mediante APIs REST y procesamiento de archivos para visualizar los datos de los sensores.
+      - Diseñé un sistema de alertas que redujo un 40 % el tiempo de respuesta a fallos técnicos.
+      - Introduje Git y GitHub para el control de versiones; los errores en producción bajaron un 20 %.
+
+educacion:
+  - titulo: Ingeniería de Sistemas
+    institucion: Corporación Universitaria Politécnico Costa Atlántica
+    fecha: En curso, 8.º semestre
+  - titulo: Tecnología en Desarrollo de Software
+    institucion: Corporación Universitaria Politécnico Costa Atlántica
+    fecha: Oct 2025
+    enlace: https://drive.google.com/file/d/1Cv7b7-TQjzIuBE3G1muT-S5mstWovKDc/view?usp=sharing
+  - titulo: Tecnólogo en Análisis y Desarrollo de Sistemas de Información
+    institucion: Servicio Nacional de Aprendizaje (SENA)
+    fecha: Ago 2024
+    enlace: https://drive.google.com/file/d/1mzA-EXPe1aG-QgZfnief2o4YaQwjE94W/view?usp=sharing
+
+formacion_titulo: Cursos y reconocimientos
+formacion:
+  - titulo: Reconocimiento al desarrollo y la innovación en SENNOVA
+    detalle: SENA
+    fecha: Ene 2024
+    enlace: https://drive.google.com/file/d/1IV2dSe81XHUf0wXCoENJOkQflBC1lww3/view?usp=sharing
+  - titulo: Azure, Create a REST API using Node.js Serverless Functions
+    detalle: Coursera
+    fecha: Ene 2025
+    enlace: https://drive.google.com/file/d/124soEHl8PxMY0X1zb_8uVuWgVn3RHpIa/view?usp=sharing
+  - titulo: Certificado de prácticas
+    detalle: SENA
+    fecha: Jul 2024
+    enlace: https://drive.google.com/file/d/1xdl-_P3rEL5vuNxbkBQwNFMyq66Da2tx/view?usp=sharing
+  - titulo: Aplicación de la calidad del software en el proceso de desarrollo
+    detalle: SENA
+    fecha: Jul 2023
+    enlace: https://drive.google.com/file/d/1a-HR1x5vOP9cxRtabEA2MJkk8tbY3qA-/view?usp=sharing

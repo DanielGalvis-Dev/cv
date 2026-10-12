@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="es" data-paleta="ciruela">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hojas de vida</title>
+<link rel="stylesheet" href="assets/css/cv.css">
+<style>
+  .portada { max-width: 1120px; margin: 0 auto; padding: 72px 24px 64px; }
+  .portada > h1 { font-family: var(--display); font-weight: 600; font-size: clamp(40px, 6vw, 64px); line-height: 1.02; color: var(--tinta); max-width: 14ch; }
+  .portada > p { margin-top: 14px; color: var(--tinta-suave); max-width: 52ch; }
+  .personas { margin-top: 48px; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 28px; }
+  .persona {
+    display: grid;
+    grid-template-columns: 112px minmax(0, 1fr);
+    gap: 22px;
+    align-items: center;
+    padding: 28px;
+    text-decoration: none;
+    color: var(--tapa-texto);
+    background: var(--tapa);
+    transition: transform 0.25s var(--suave);
+  }
+  .persona:hover { transform: translateY(-3px); }
+  .persona img { width: 112px; height: 112px; border-radius: 50%; object-fit: cover; object-position: 50% 22%; padding: 4px; background: var(--tono-1); }
+  .persona h2 { font-family: var(--display); font-weight: 600; font-size: 27px; line-height: 1.08; color: var(--tapa-blanco); }
+  .persona p { margin-top: 8px; font-size: 15px; line-height: 1.45; }
+  .persona span { display: inline-block; margin-top: 12px; font-weight: 600; color: var(--movimiento-tapa); }
+</style>
+</head>
+<body>
+<main class="portada">
+  <h1>Hojas de vida</h1>
+  <p>Cada hoja de vida se puede ver en cinco paletas de color y descargar en PDF de una página.</p>
+  <div class="personas">
+    {%- for p in personas %}
+    <a class="persona" href="{{ p.slug }}/" data-paleta="{{ p.paleta }}">
+      <img src="assets/img/{{ p.foto }}" alt="" width="112" height="112">
+      <div>
+        <h2>{{ p.nombre }}</h2>
+        <p>{{ p.rol | pend }}</p>
+        <span>Ver hoja de vida</span>
+      </div>
+    </a>
+    {%- endfor %}
+  </div>
+</main>
+</body>
+</html>

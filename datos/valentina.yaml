@@ -1,0 +1,82 @@
+# Contenido público de la hoja de vida de Valentina.
+# Fuente: personas/valentina-araujo/base-conocimiento.yaml (carpeta privada, fuera de este repo).
+# Lo que está entre [corchetes] son datos pendientes: se muestran subrayados y NO deben publicarse así.
+slug: valentina
+nombre: Valentina María Araujo Reyes
+rol: Técnica en Administración en Salud. Asistencia administrativa y atención al cliente.
+en_curso: Estudiando gestión de proyectos
+foto: valentina.jpg
+paleta: ciruela
+
+contacto:
+  telefono: "+57 310 735 5354"
+  correo: valentina.araujo.adm@gmail.com
+  ciudad: Sabanalarga, Atlántico
+
+tapa:
+  - titulo: Sabe hacer
+    grupos:
+      - nombre: Administración
+        texto: Cartas, actas y memorandos, manejo de caja, contabilidad básica, atención de PQRS.
+      - nombre: Salud
+        texto: Admisiones, facturación, autorizaciones, citas médicas, cuentas médicas y recobros.
+      - nombre: Herramientas
+        texto: Microsoft Word y Excel.
+
+idiomas:
+  - idioma: Español
+    nivel: Nativo
+  - idioma: Inglés
+    nivel: Básico (A2)
+
+perfil: >-
+  Técnica profesional en Administración en Salud y técnica en Asistencia Administrativa del SENA.
+  He manejado sola la operación diaria de un almacén (ventas, caja y registro contable) y atendido
+  clientes en call center. Conozco facturación, autorizaciones y cuentas médicas, y hoy estudio
+  gestión de proyectos para crecer hacia la coordinación de operaciones.
+
+experiencia:
+  - cargo: Encargada de tienda
+    lugar: "[Nombre del almacén], Sabanalarga"
+    fecha: "[fechas]"
+    puntos:
+      - Operé sola el almacén durante toda la jornada, desde la apertura hasta el cierre, sin supervisión directa.
+      - Asesoré a los clientes en la elección de prendas y productos [~X clientes al día] y cobré cada venta en caja.
+      - Registré a mano cada artículo vendido en el libro de ventas del local [y cuadré la caja al cierre].
+  - cargo: Maquilladora
+    lugar: Trabajo independiente, Sabanalarga
+    fecha: "[fechas]"
+    puntos:
+      - Presto servicios de maquillaje a clientes particulares [tipo de eventos, clientes al mes].
+  - cargo: Miembro del Comité Logístico
+    lugar: Congreso Internacional CIESE 2023, Corporación de Educación Superior del Litoral, Barranquilla
+    fecha: Nov 2023
+    puntos:
+      - Apoyé la logística de un congreso internacional de 3 días con instituciones aliadas [tareas y asistentes].
+  - cargo: "[Cargo]"
+    lugar: Viajes y Travesías de Colombia, [Ciudad]
+    fecha: Dic 2022 – Jul 2023
+    puntos:
+      - Atendí clientes en el call center, resolví sus problemas y procesé sus órdenes [llamadas al día].
+      - Planifiqué y supervisé las tareas del equipo de marketing y ventas [tamaño del equipo].
+      - Gestioné PQRS y apoyé procesos de contratación y selección de personal.
+
+educacion:
+  - titulo: Técnico Profesional en Administración en Salud
+    institucion: Corporación de Educación Superior del Litoral
+    fecha: Sep 2023 – Ago 2024
+  - titulo: Técnico en Asistencia Administrativa
+    institucion: Servicio Nacional de Aprendizaje (SENA)
+    fecha: Abr 2022 – Jul 2023
+
+formacion_titulo: Formación complementaria
+formacion:
+  - titulo: Gestión de proyectos, en curso.
+    detalle: "[plataforma y fecha estimada]"
+    en_curso: true
+  - titulo: Diplomado en Modelo de Negocios, Innovación y Emprendimiento
+    detalle: Corporación de Educación Superior del Litoral
+    fecha: "2023"
+  - titulo: Cursos SENA
+    detalle: Organización de eventos (40 h), comunicación con coaching (48 h), ética laboral (48 h).
+    fecha: "2022"
