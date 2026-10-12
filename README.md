@@ -25,4 +25,4 @@ python -m http.server -d _site 8000
 - `publicar: false` en el YAML de una persona la deja fuera del sitio.
 - Ninguna cifra o logro sin respaldo: el contenido sale de la base de conocimiento privada de cada persona.
 
-Tipografías: Bodoni Moda y Hanken Grotesk (SIL Open Font License).
+Tipografía: Figtree (SIL Open Font License).

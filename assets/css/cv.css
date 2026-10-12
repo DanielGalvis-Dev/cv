@@ -2,15 +2,9 @@
    Pantalla: amplia y adaptable. Impresión (@media print): compacta, una hoja carta. */
 
 @font-face {
-  font-family: "Bodoni Moda";
-  src: url("../fonts/BodoniModa.ttf") format("truetype");
-  font-weight: 400 900;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Hanken Grotesk";
-  src: url("../fonts/HankenGrotesk.ttf") format("truetype");
-  font-weight: 100 900;
+  font-family: "Figtree";
+  src: url("../fonts/Figtree.ttf") format("truetype");
+  font-weight: 300 900;
   font-display: swap;
 }
 
@@ -54,8 +48,8 @@
 }
 
 :root {
-  --display: "Bodoni Moda", "Didot", serif;
-  --texto: "Hanken Grotesk", system-ui, sans-serif;
+  --display: "Figtree", system-ui, sans-serif;
+  --texto: "Figtree", system-ui, sans-serif;
   --suave: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -151,10 +145,10 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--movimiento); ou
 
 .nombre {
   font-family: var(--display);
-  font-weight: 600;
+  font-weight: 700;
   font-size: 40px;
   line-height: 1.04;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
   color: var(--tapa-blanco);
   text-wrap: balance;
 }
@@ -164,8 +158,8 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--movimiento); ou
 
 .tapa h2 {
   font-family: var(--display);
-  font-weight: 500;
-  font-size: 21px;
+  font-weight: 700;
+  font-size: 20px;
   color: var(--tapa-blanco);
   margin: 38px 0 12px;
   padding-bottom: 8px;
@@ -206,8 +200,8 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--movimiento); ou
   align-items: center;
   gap: 12px;
   font-family: var(--display);
-  font-weight: 600;
-  font-size: 27px;
+  font-weight: 700;
+  font-size: 26px;
   line-height: 1.1;
   color: var(--tapa);
   margin-bottom: 16px;
