@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>{{ p.nombre }} · Hoja de vida (ATS)</title>
+<style>
+  /* Versión para ATS: una columna, texto real, sin colores ni imágenes, encabezados estándar.
+     Solo se imprime a PDF; no es una página del sitio. */
+  @font-face { font-family: "Figtree"; src: url("{{ fuentes }}/Figtree-Regular.woff2") format("woff2"); font-weight: 400; }
+  @font-face { font-family: "Figtree"; src: url("{{ fuentes }}/Figtree-Bold.woff2") format("woff2"); font-weight: 700; }
+  @page { size: 8.5in 11in; margin: 0.5in 0.6in; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: "Figtree", Arial, sans-serif; color: #111; font-size: 9.8pt; line-height: 1.34; }
+  h1 { font-size: 20pt; font-weight: 700; line-height: 1.1; }
+  .titular { margin-top: 3pt; font-size: 10.5pt; }
+  .contacto { margin-top: 3pt; font-size: 9.5pt; }
+  h2 { margin: 9pt 0 3pt; padding-bottom: 2pt; font-size: 11.5pt; font-weight: 700; border-bottom: 0.75pt solid #111; }
+  .entrada + .entrada { margin-top: 6pt; }
+  .entrada h3 { font-size: 10.2pt; font-weight: 700; }
+  .meta { font-size: 9.5pt; }
+  ul { margin: 2pt 0 0 14pt; }
+  li { margin-top: 1pt; }
+  .grupo b { font-weight: 700; }
+</style>
+</head>
+<body>
+  <h1>{{ p.nombre }}</h1>
+  <p class="titular">{{ p.rol }}</p>
+  {%- set c = p.contacto %}
+  <p class="contacto">
+    {%- set datos = [] %}
+    {%- if c.ciudad %}{% set _ = datos.append(c.ciudad) %}{% endif %}
+    {%- if c.telefono %}{% set _ = datos.append(c.telefono) %}{% endif %}
+    {%- if c.correo %}{% set _ = datos.append(c.correo) %}{% endif %}
+    {%- if c.linkedin %}{% set _ = datos.append("linkedin.com/in/" ~ c.linkedin) %}{% endif %}
+    {%- if c.github %}{% set _ = datos.append("github.com/" ~ c.github) %}{% endif %}
+    {{ datos | join(" | ") }}
+  </p>
+
+  <h2>Perfil</h2>
+  <p>{{ p.perfil }}</p>
+
+  <h2>Experiencia</h2>
+  {%- for e in p.experiencia if e.en_pdf is not false %}
+  <div class="entrada">
+    <h3>{{ e.cargo }}</h3>
+    <p class="meta">{{ e.lugar }} | {{ e.fecha }}</p>
+    <ul>
+      {%- for punto in e.puntos %}
+      {%- if punto is mapping %}{% if punto.en_pdf is not false %}<li>{{ punto.texto }}</li>{% endif %}
+      {%- else %}<li>{{ punto }}</li>{% endif %}
+      {%- endfor %}
+    </ul>
+  </div>
+  {%- endfor %}
+
+  <h2>Educación</h2>
+  {%- for e in p.educacion %}
+  <div class="entrada">
+    <h3>{{ e.titulo }}</h3>
+    <p class="meta">{{ e.institucion }} | {{ e.fecha }}</p>
+  </div>
+  {%- endfor %}
+
+  {%- set cursos = p.formacion | default([]) | rejectattr('en_pdf', 'sameas', false) | list %}
+  {%- if cursos %}
+  <h2>Certificaciones y cursos</h2>
+  <ul>
+    {%- for f in cursos %}
+    <li>{{ f.titulo.rstrip('.') }}{% if f.detalle %}, {{ f.detalle.rstrip('.') }}{% endif %}{% if f.fecha %} ({{ f.fecha }}){% endif %}</li>
+    {%- endfor %}
+  </ul>
+  {%- endif %}
+
+  <h2>Habilidades</h2>
+  {%- for bloque in p.tapa %}
+  {%- for g in bloque.grupos %}
+  <p class="grupo"><b>{{ g.nombre }}:</b> {% set w = g.texto.split(" ")[0] %}{% if w.isupper() %}{{ g.texto }}{% else %}{{ g.texto[:1] | lower }}{{ g.texto[1:] }}{% endif %}</p>
+  {%- endfor %}
+  {%- endfor %}
+  <p class="grupo"><b>Idiomas:</b> {% for i in p.idiomas %}{% if loop.first %}{{ i.idioma }}{% else %}{{ i.idioma | lower }}{% endif %} {{ i.nivel[:1] | lower }}{{ i.nivel[1:] }}{% if not loop.last %}, {% endif %}{% endfor %}</p>
+</body>
+</html>

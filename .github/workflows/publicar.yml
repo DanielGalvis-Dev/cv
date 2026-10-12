@@ -22,6 +22,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+          cache: pip
       - name: Instalar dependencias
         run: pip install -r requirements.txt
       - name: Generar HTML y PDF (falla si algún PDF no cabe en 1 hoja)

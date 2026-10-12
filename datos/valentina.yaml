@@ -2,9 +2,13 @@
 # Fuente: personas/valentina-araujo/base-conocimiento.yaml (carpeta privada, fuera de este repo).
 # Lo que está entre [corchetes] son datos pendientes: se muestran subrayados y NO deben publicarse así.
 slug: valentina
+# No se publica hasta completar los [datos pendientes] y confirmar sus títulos.
+# Para revisarla en local: python build.py --borradores
+publicar: false
 nombre: Valentina María Araujo Reyes
 rol: Técnica en Administración en Salud. Asistencia administrativa y atención al cliente.
 en_curso: Estudiando gestión de proyectos
+archivo: CV_Valentina_Araujo
 foto: valentina.jpg
 paleta: ciruela
 
@@ -14,11 +18,11 @@ contacto:
   ciudad: Sabanalarga, Atlántico
 
 tapa:
-  - titulo: Sabe hacer
+  - titulo: Habilidades
     grupos:
       - nombre: Administración
         texto: Cartas, actas y memorandos, manejo de caja, contabilidad básica, atención de PQRS.
-      - nombre: Salud
+      - nombre: Formación en salud
         texto: Admisiones, facturación, autorizaciones, citas médicas, cuentas médicas y recobros.
       - nombre: Herramientas
         texto: Microsoft Word y Excel.
@@ -43,11 +47,6 @@ experiencia:
       - Operé sola el almacén durante toda la jornada, desde la apertura hasta el cierre, sin supervisión directa.
       - Asesoré a los clientes en la elección de prendas y productos [~X clientes al día] y cobré cada venta en caja.
       - Registré a mano cada artículo vendido en el libro de ventas del local [y cuadré la caja al cierre].
-  - cargo: Maquilladora
-    lugar: Trabajo independiente, Sabanalarga
-    fecha: "[fechas]"
-    puntos:
-      - Presto servicios de maquillaje a clientes particulares [tipo de eventos, clientes al mes].
   - cargo: Miembro del Comité Logístico
     lugar: Congreso Internacional CIESE 2023, Corporación de Educación Superior del Litoral, Barranquilla
     fecha: Nov 2023
@@ -71,8 +70,9 @@ educacion:
 
 formacion_titulo: Formación complementaria
 formacion:
-  - titulo: Gestión de proyectos, en curso.
+  - titulo: Gestión de proyectos
     detalle: "[plataforma y fecha estimada]"
+    fecha: En curso
     en_curso: true
   - titulo: Diplomado en Modelo de Negocios, Innovación y Emprendimiento
     detalle: Corporación de Educación Superior del Litoral

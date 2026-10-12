@@ -1,32 +1,61 @@
+{%- set url_pagina = url_base ~ "/" ~ p.slug ~ "/" -%}
+{%- macro icono_externo() -%}
+<svg class="icono solo-pantalla" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg>
+{%- endmacro -%}
+{%- macro titulo_enlazado(item) -%}
+{%- if item.enlace -%}
+<a href="{{ item.enlace }}" target="_blank" rel="noopener" aria-label="{{ item.titulo }} (ver certificado, se abre en otra pestaña)">{{ item.titulo }}{{ icono_externo() }}</a>
+{%- else -%}{{ item.titulo }}{%- endif -%}
+{%- endmacro -%}
 <!doctype html>
 <html lang="es" data-paleta="{{ p.paleta }}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{{ p.nombre }} · Hoja de vida</title>
-<meta name="description" content="Hoja de vida de {{ p.nombre }}. {{ p.rol }}">
+<meta name="description" content="{{ p.rol }}">
+<meta name="theme-color" content="{{ paleta_defecto.tapa }}">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='15' fill='{{ paleta_defecto.tapa | replace('#', '%23') }}'/%3E%3Ccircle cx='16' cy='16' r='6' fill='{{ paleta_defecto.claro | replace('#', '%23') }}'/%3E%3C/svg%3E">
+<link rel="preload" href="../assets/fonts/Figtree-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<meta property="og:type" content="profile">
+<meta property="og:locale" content="es_CO">
+<meta property="og:title" content="{{ p.nombre }} · Hoja de vida">
+<meta property="og:description" content="{{ p.rol }}">
+<meta property="og:url" content="{{ url_pagina }}">
+<meta property="og:image" content="{{ url_base }}/assets/img/og-{{ p.slug }}.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="../assets/css/cv.css">
 <script>
-  // Aplica la paleta guardada antes de pintar, para que no parpadee.
+  // Aplica la paleta antes de pintar (sin parpadeo). Solo se aceptan paletas conocidas:
+  // un valor viejo o mal escrito vuelve a la paleta por defecto de la persona.
   (function () {
+    var validas = {{ paletas | map(attribute='id') | list | tojson }};
+    var clave = "paleta-{{ p.slug }}";
     var q = new URLSearchParams(location.search).get("paleta");
-    var g = null; try { g = localStorage.getItem("paleta-{{ p.slug }}"); } catch (e) {}
-    var v = q || g;
+    var g = null; try { g = localStorage.getItem(clave); } catch (e) {}
+    if (g && validas.indexOf(g) < 0) { try { localStorage.removeItem(clave); } catch (e) {} g = null; }
+    var v = validas.indexOf(q) >= 0 ? q : g;
     if (v) document.documentElement.setAttribute("data-paleta", v);
   })();
 </script>
 </head>
-<body data-slug="{{ p.slug }}">
+<body data-slug="{{ p.slug }}" data-archivo="{{ p.archivo }}" data-paleta-defecto="{{ p.paleta }}">
 
 <nav class="barra" aria-label="Opciones">
-  <a class="volver" href="../">← Hojas de vida</a>
+  <a class="volver" href="../">
+    <svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5"/><path d="m11 18-6-6 6-6"/></svg>
+    Hojas de vida
+  </a>
   <div class="paletas" role="group" aria-label="Paleta de colores">
+    <span>Color</span>
     {%- for pal in paletas %}
     <button type="button" data-p="{{ pal.id }}" style="--a:{{ pal.tapa }};--b:{{ pal.movimiento }}" aria-label="Paleta {{ pal.nombre }}" title="{{ pal.nombre }}"></button>
     {%- endfor %}
   </div>
-  <a class="descargar" href="../pdf/{{ p.slug }}-{{ p.paleta }}.pdf" download>
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg>
+  <a class="descargar" href="../pdf/{{ p.slug }}-{{ p.paleta }}.pdf" download="{{ p.archivo }}.pdf" aria-haspopup="dialog">
+    <svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg>
     Descargar PDF
   </a>
 </nav>
@@ -38,7 +67,7 @@
     <h1 class="nombre">{{ p.nombre }}</h1>
     <p class="rol">{{ p.rol | pend }}</p>
     {%- if p.en_curso %}
-    <p class="rumbo"><span class="pan chica mov" aria-hidden="true"></span>{{ p.en_curso | pend }}</p>
+    <p class="rumbo"><span class="pan" aria-hidden="true"></span>{{ p.en_curso | pend }}</p>
     {%- endif %}
 
     <h2>Contacto</h2>
@@ -46,11 +75,13 @@
       {%- set c = p.contacto %}
       {%- if c.telefono %}<li><span>Teléfono</span><a href="tel:{{ c.telefono | replace(' ', '') }}">{{ c.telefono }}</a></li>{% endif %}
       {%- if c.correo %}<li><span>Correo</span><a href="mailto:{{ c.correo }}">{{ c.correo }}</a></li>{% endif %}
-      {%- if c.linkedin %}<li><span>LinkedIn</span><a href="https://www.linkedin.com/in/{{ c.linkedin }}">linkedin.com/in/{{ c.linkedin }}</a></li>{% endif %}
-      {%- if c.github %}<li><span>GitHub</span><a href="https://github.com/{{ c.github }}">github.com/{{ c.github }}</a></li>{% endif %}
+      {%- if c.linkedin %}<li><span>LinkedIn</span><a href="https://www.linkedin.com/in/{{ c.linkedin }}" target="_blank" rel="noopener">linkedin.com/in/{{ c.linkedin }}</a></li>{% endif %}
+      {%- if c.github %}<li><span>GitHub</span><a href="https://github.com/{{ c.github }}" target="_blank" rel="noopener">github.com/{{ c.github }}</a></li>{% endif %}
       {%- if c.ciudad %}<li><span>Ciudad</span><strong>{{ c.ciudad }}</strong></li>{% endif %}
     </ul>
+  </aside>
 
+  <aside class="tapa tapa-extra" aria-label="Habilidades e idiomas">
     {%- for bloque in p.tapa %}
     <h2>{{ bloque.titulo }}</h2>
     <ul class="grupos">
@@ -71,15 +102,15 @@
   <div class="carta">
 
     <section class="seccion perfil" aria-labelledby="t-perfil">
-      <h2 id="t-perfil"><span class="pan t1" aria-hidden="true"></span>Perfil</h2>
+      <h2 id="t-perfil">Perfil</h2>
       <p>{{ p.perfil | pend }}</p>
     </section>
 
     <section class="seccion" aria-labelledby="t-experiencia">
-      <h2 id="t-experiencia"><span class="pan t2" aria-hidden="true"></span>Experiencia</h2>
+      <h2 id="t-experiencia">Experiencia</h2>
       <div class="entradas">
         {%- for e in p.experiencia %}
-        <article class="entrada">
+        <article class="entrada{% if e.en_pdf is false %} solo-pantalla{% endif %}">
           <header>
             <h3>{{ e.cargo | pend }}</h3>
             <span class="fecha">{{ e.fecha | pend }}</span>
@@ -87,7 +118,11 @@
           </header>
           <ul>
             {%- for punto in e.puntos %}
+            {%- if punto is mapping %}
+            <li{% if punto.en_pdf is false %} class="solo-pantalla"{% endif %}>{{ punto.texto | pend }}</li>
+            {%- else %}
             <li>{{ punto | pend }}</li>
+            {%- endif %}
             {%- endfor %}
           </ul>
         </article>
@@ -96,12 +131,12 @@
     </section>
 
     <section class="seccion" aria-labelledby="t-educacion">
-      <h2 id="t-educacion"><span class="pan t3" aria-hidden="true"></span>Educación</h2>
+      <h2 id="t-educacion">Educación</h2>
       <div class="entradas estudios">
         {%- for e in p.educacion %}
         <div class="entrada">
           <header>
-            <h3>{% if e.enlace %}<a href="{{ e.enlace }}" title="Ver certificado">{{ e.titulo }}</a>{% else %}{{ e.titulo }}{% endif %}</h3>
+            <h3>{{ titulo_enlazado(e) }}</h3>
             <span class="fecha">{{ e.fecha | pend }}</span>
             <span class="lugar">{{ e.institucion }}</span>
           </header>
@@ -112,13 +147,13 @@
 
     {%- if p.formacion %}
     <section class="seccion" aria-labelledby="t-formacion">
-      <h2 id="t-formacion"><span class="pan t4" aria-hidden="true"></span>{{ p.formacion_titulo or "Formación complementaria" }}</h2>
+      <h2 id="t-formacion">{{ p.formacion_titulo or "Formación complementaria" }}</h2>
       <div class="entradas estudios">
         {%- for f in p.formacion %}
-        <div class="entrada{% if f.en_curso %} en-curso{% endif %}">
+        <div class="entrada{% if f.en_curso %} en-curso{% endif %}{% if f.en_pdf is false %} solo-pantalla{% endif %}">
           <header>
-            <h3>{% if f.en_curso %}<span class="pan chica mov" aria-hidden="true"></span>{% endif %}{% if f.enlace %}<a href="{{ f.enlace }}" title="Ver certificado">{{ f.titulo }}</a>{% else %}{{ f.titulo }}{% endif %}</h3>
-            {%- if f.fecha %}<span class="fecha">{{ f.fecha }}</span>{% endif %}
+            <h3>{% if f.en_curso %}<span class="pan" aria-hidden="true"></span>{% endif %}{{ titulo_enlazado(f) }}</h3>
+            {%- if f.fecha %}<span class="fecha">{{ f.fecha | pend }}</span>{% endif %}
             {%- if f.detalle %}<span class="lugar">{{ f.detalle | pend }}</span>{% endif %}
           </header>
         </div>
@@ -131,8 +166,36 @@
 </main>
 
 {%- if p.tiene_enlaces %}
-<p class="pie">Los títulos subrayados enlazan a sus certificados.</p>
+<p class="pie">Los títulos con flecha enlazan a sus certificados.</p>
 {%- endif %}
+
+<dialog class="descarga" aria-labelledby="t-descarga" aria-describedby="d-descarga">
+  <form method="dialog" class="descarga-cuerpo">
+    <div class="descarga-texto">
+      <h2 id="t-descarga">Descargar hoja de vida</h2>
+      <p class="descarga-nota" id="d-descarga">Elige la versión. La vista previa muestra la hoja exacta que se va a descargar.</p>
+      <fieldset class="opciones">
+        <legend class="oculto">Versión del PDF</legend>
+        <label class="opcion">
+          <input type="radio" name="version" value="visual" checked>
+          <span><b>Para leer e imprimir</b>Diseño a color en la paleta <em class="nombre-paleta"></em>, en una sola hoja.</span>
+        </label>
+        <label class="opcion">
+          <input type="radio" name="version" value="ats">
+          <span><b>Para sistemas de selección (ATS)</b>Una columna, sin colores ni foto, para cargarla en un portal de empleo o sistema de candidatos.</span>
+        </label>
+      </fieldset>
+      <div class="acciones">
+        <button type="submit" value="cancelar" class="boton-secundario">Cancelar</button>
+        <a class="descargar confirmar" href="../pdf/{{ p.slug }}-{{ p.paleta }}.pdf" download="{{ p.archivo }}.pdf">Descargar PDF</a>
+      </div>
+    </div>
+    <figure class="vista">
+      <img src="../pdf/vistas/{{ p.slug }}-{{ p.paleta }}.jpg" alt="Vista previa de la hoja de vida que se va a descargar" width="680" height="880">
+      <p class="vista-error" hidden>No se pudo cargar la vista previa. La descarga funciona igual.</p>
+    </figure>
+  </form>
+</dialog>
 
 <script src="../assets/js/paletas.js"></script>
 </body>

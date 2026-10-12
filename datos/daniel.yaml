@@ -1,11 +1,14 @@
 # Contenido público de la hoja de vida de Daniel.
 # Fuente: _data/data.yml del repo anterior danielgalvis-dev/online-cv (2026-10-12).
 # Cambios de redacción sin datos nuevos: viñetas sin gerundio final, perfil con logros concretos,
-# habilidades sin porcentajes. Pendiente: base de conocimiento propia y competencias blandas con evidencia.
+# habilidades sin porcentajes. Polaria (2026-10-12): leído de D:/WORK/POLARIA (repos, CHANGELOG, ESTADO.md, git log).
+# Polaria: inicio 2026-03-09 y objeto de consultoría según contrato (Daniel); Mateo Support construido desde cero desde marzo (Daniel).
+# Pendiente: base de conocimiento propia.
 slug: daniel
 nombre: Daniel de Jesús Galvis Zambrano
-rol: Analista desarrollador de software. Automatización, desarrollo web y visualización de datos.
-en_curso: Cursando 8.º semestre de Ingeniería de Sistemas
+rol: Desarrollador de software e IA aplicada. Agentes con Claude Code y automatización con n8n.
+en_curso: Cursando último semestre de Ingeniería de Sistemas
+archivo: CV_Daniel_Galvis
 foto: daniel.jpg
 paleta: medianoche
 
@@ -16,14 +19,14 @@ contacto:
   github: DanielGalvis-Dev
 
 tapa:
-  - titulo: Tecnologías
+  - titulo: Habilidades
     grupos:
-      - nombre: Frontend
-        texto: HTML, CSS, JavaScript, TypeScript, Angular, Tailwind CSS, Bootstrap.
-      - nombre: Backend y datos
-        texto: Node.js, Nest.js, PHP, MySQL, APIs REST.
-      - nombre: Herramientas
-        texto: Git y GitHub.
+      - nombre: IA y agentes
+        texto: Claude Code (skills, subagentes, hooks, plugins, MCP), OpenAI API, RAG, n8n, spec-kit.
+      - nombre: Desarrollo
+        texto: TypeScript, Node.js, Express, Nest.js, React, PHP, HTML, CSS, Git, Vitest.
+      - nombre: Datos e infraestructura
+        texto: Supabase (Postgres), MySQL, AWS, Terraform.
 
 idiomas:
   - idioma: Español
@@ -32,26 +35,41 @@ idiomas:
     nivel: Intermedio (B1)
 
 perfil: >-
-  Desarrollador de software con experiencia en automatización de procesos, desarrollo web y
-  visualización de datos. En el Centro Nacional Colombo Alemán construí una plataforma de monitoreo
-  de sensores en tiempo real, optimicé bases de datos MySQL y llevé al equipo a trabajar con Git.
-  Curso octavo semestre de Ingeniería de Sistemas.
+  Desarrollador de soluciones de software con IA aplicada. Diseño y construyo agentes de IA, sistemas
+  RAG y automatizaciones para procesos reales de negocio, y los llevo a producción integrados con bases
+  de datos, APIs y canales de chat. Trabajo con Claude Code, OpenAI, n8n, TypeScript y Postgres, con
+  revisión de calidad y seguridad antes de publicar.
 
 experiencia:
+  - cargo: Consultor de Desarrollo de Software e IA
+    lugar: Polaria Tech
+    fecha: Mar 2026 – presente
+    puntos:
+      - Construí desde cero Mateo Support, asistente de IA de soporte técnico por chat (n8n, OpenAI y RAG con pgvector); lo rediseñé como un orquestador con 7 sub-workflows y publiqué más de 20 versiones (mar.–oct. 2026).
+      - Automaticé procesos internos con n8n, como el archivado diario de las minutas de reunión en Google Drive (desde mar. 2026).
+      - "Endurecí la seguridad del asistente: eliminé inyección SQL por interpolación de consultas y validé los webhooks de WhatsApp con firmas HMAC (ago. 2026)."
+      - Creé un marketplace interno de 6 plugins de Claude Code para el equipo; sus hooks bloquean el git push y la publicación de workflows de n8n hasta que un subagente revisor aislado aprueba (sep.–oct. 2026).
+      - Diseñé 20 subagentes de Claude Code para auditar la metodología ágil del equipo y convertí sus protocolos en skills ejecutables (gestión de Linear, auditoría técnica, validación de formularios) (ago.–sep. 2026).
+      - texto: Diseñé el plan de migración de la infraestructura a AWS en 4 fases, con la infraestructura como código en Terraform (ago. 2026).
+        en_pdf: false
+      - texto: Prototipé la captura de pedidos con IA (Express, TypeScript y OpenAI) que lee pedidos en texto o archivos y prellena el formulario (ago.–sep. 2026).
+        en_pdf: false
   - cargo: Analista Desarrollador de Software
     lugar: Centro Nacional Colombo Alemán
     fecha: 2023 – 2024
     puntos:
       - Desarrollé una plataforma de monitoreo que integra en tiempo real los datos de sensores, con foco en disponibilidad y consultas eficientes.
       - Optimicé bases de datos MySQL en entornos de alta concurrencia; el rendimiento de las consultas mejoró un 30 %.
-      - Diseñé integraciones con terceros mediante APIs REST y procesamiento de archivos para visualizar los datos de los sensores.
+      - texto: Diseñé integraciones con terceros mediante APIs REST y procesamiento de archivos para visualizar los datos de los sensores.
+        en_pdf: false
       - Diseñé un sistema de alertas que redujo un 40 % el tiempo de respuesta a fallos técnicos.
-      - Introduje Git y GitHub para el control de versiones; los errores en producción bajaron un 20 %.
+      - texto: Introduje Git y GitHub para el control de versiones; los errores en producción bajaron un 20 %.
+        en_pdf: false
 
 educacion:
   - titulo: Ingeniería de Sistemas
     institucion: Corporación Universitaria Politécnico Costa Atlántica
-    fecha: En curso, 8.º semestre
+    fecha: Último semestre
   - titulo: Tecnología en Desarrollo de Software
     institucion: Corporación Universitaria Politécnico Costa Atlántica
     fecha: Oct 2025
@@ -67,15 +85,13 @@ formacion:
     detalle: SENA
     fecha: Ene 2024
     enlace: https://drive.google.com/file/d/1IV2dSe81XHUf0wXCoENJOkQflBC1lww3/view?usp=sharing
-  - titulo: Azure, Create a REST API using Node.js Serverless Functions
-    detalle: Coursera
-    fecha: Ene 2025
-    enlace: https://drive.google.com/file/d/124soEHl8PxMY0X1zb_8uVuWgVn3RHpIa/view?usp=sharing
   - titulo: Certificado de prácticas
     detalle: SENA
     fecha: Jul 2024
+    en_pdf: false
     enlace: https://drive.google.com/file/d/1xdl-_P3rEL5vuNxbkBQwNFMyq66Da2tx/view?usp=sharing
   - titulo: Aplicación de la calidad del software en el proceso de desarrollo
     detalle: SENA
     fecha: Jul 2023
+    en_pdf: false
     enlace: https://drive.google.com/file/d/1a-HR1x5vOP9cxRtabEA2MJkk8tbY3qA-/view?usp=sharing

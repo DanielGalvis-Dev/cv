@@ -4,6 +4,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Hojas de vida</title>
+<meta name="description" content="Hojas de vida de {{ personas | map(attribute='nombre') | join(' y ') }}.">
+<meta name="theme-color" content="#3B1F35">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_CO">
+<meta property="og:title" content="Hojas de vida">
+<meta property="og:description" content="Hojas de vida de {{ personas | map(attribute='nombre') | join(' y ') }}.">
+<meta property="og:url" content="{{ url_base }}/">
+{%- if personas %}
+<meta property="og:image" content="{{ url_base }}/assets/img/og-{{ personas[0].slug }}.jpg">
+{%- endif %}
+<meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="assets/css/cv.css">
 <style>
   .portada { max-width: 1120px; margin: 0 auto; padding: 72px 24px 64px; }
@@ -31,7 +43,7 @@
 <body>
 <main class="portada">
   <h1>Hojas de vida</h1>
-  <p>Cada hoja de vida se puede ver en cinco paletas de color y descargar en PDF de una página.</p>
+  <p>Elige una persona para ver su experiencia y descargar su hoja de vida en PDF.</p>
   <div class="personas">
     {%- for p in personas %}
     <a class="persona" href="{{ p.slug }}/" data-paleta="{{ p.paleta }}">

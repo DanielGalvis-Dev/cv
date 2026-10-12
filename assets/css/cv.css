@@ -1,12 +1,12 @@
 /* Carta de tonos: hoja de vida en dos presentaciones.
-   Pantalla: amplia y adaptable. Impresión (@media print): compacta, una hoja carta. */
+   Pantalla: amplia y adaptable. Impresión (@media print): compacta, una hoja carta.
+   Figtree en instancias estáticas (no variable): así el PDF incrusta TrueType y no Type3,
+   que algunos ATS no leen bien. */
 
-@font-face {
-  font-family: "Figtree";
-  src: url("../fonts/Figtree.ttf") format("truetype");
-  font-weight: 300 900;
-  font-display: swap;
-}
+@font-face { font-family: "Figtree"; src: url("../fonts/Figtree-Regular.woff2") format("woff2"); font-weight: 400; font-display: swap; }
+@font-face { font-family: "Figtree"; src: url("../fonts/Figtree-Medium.woff2") format("woff2"); font-weight: 500; font-display: swap; }
+@font-face { font-family: "Figtree"; src: url("../fonts/Figtree-SemiBold.woff2") format("woff2"); font-weight: 600; font-display: swap; }
+@font-face { font-family: "Figtree"; src: url("../fonts/Figtree-Bold.woff2") format("woff2"); font-weight: 700; font-display: swap; }
 
 /* ---------- Paletas ---------- */
 /* --tapa: columna izquierda. --movimiento: único color para lo que está en curso. */
@@ -56,7 +56,11 @@
 /* ---------- Base (pantalla) ---------- */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
-html { background: var(--fondo-pantalla); transition: background-color 0.4s var(--suave); }
+html {
+  background: var(--fondo-pantalla);
+  scrollbar-color: var(--tono-3) var(--fondo-pantalla);
+  transition: background-color 0.4s var(--suave);
+}
 
 body {
   font-family: var(--texto);
@@ -69,6 +73,9 @@ body {
 ::selection { background: var(--tono-1); color: var(--tapa); }
 a { color: inherit; text-underline-offset: 3px; }
 a:focus-visible, button:focus-visible { outline: 2px solid var(--movimiento); outline-offset: 3px; border-radius: 3px; }
+/* Sobre la tapa oscura el foco usa el tono claro: el oscuro no alcanzaba 3:1. */
+.tapa a:focus-visible { outline-color: var(--movimiento-tapa); }
+.icono { width: 1em; height: 1em; flex: none; }
 
 /* Barra superior (solo pantalla) */
 .barra {
@@ -76,17 +83,28 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--movimiento); ou
   margin: 0 auto;
   padding: 18px 24px 0;
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 20px;
+  gap: 14px 20px;
   font-size: 14px;
 }
-.barra .volver { color: var(--tinta-suave); text-decoration: none; margin-right: auto; }
+.barra .volver {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--tinta-suave);
+  text-decoration: none;
+  margin-right: auto;
+}
 .barra .volver:hover { color: var(--tinta); text-decoration: underline; }
 
-.paletas { display: flex; gap: 8px; }
+/* El selector de paletas es una herramienta del dueño del CV: solo con ?editar. */
+.paletas { display: none; gap: 6px; align-items: center; }
+.editar .paletas { display: flex; }
+.paletas span { color: var(--tinta-suave); margin-right: 4px; }
 .paletas button {
-  width: 24px;
-  height: 24px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   border: 0;
   cursor: pointer;
@@ -94,14 +112,15 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--movimiento); ou
   box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.55);
   transition: transform 0.2s var(--suave);
 }
-.paletas button:hover { transform: scale(1.12); }
+.paletas button:hover { transform: scale(1.1); }
 .paletas button[aria-pressed="true"] { outline: 2px solid var(--tinta); outline-offset: 2px; }
 
 .descargar {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  padding: 9px 18px;
+  padding: 10px 18px;
   border-radius: 999px;
   background: var(--tapa);
   color: var(--tapa-blanco);
@@ -111,26 +130,29 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--movimiento); ou
   transition: transform 0.2s var(--suave), background-color 0.4s var(--suave);
 }
 .descargar:hover { transform: translateY(-1px); }
-.descargar svg { width: 16px; height: 16px; }
 
-/* La hoja */
+/* La hoja: tapa (identidad y contacto) + extra (habilidades e idiomas) a la izquierda,
+   carta a la derecha. En el celular la carta sube justo después de la identidad. */
 .hoja {
   max-width: 1120px;
   margin: 18px auto 48px;
   display: grid;
   grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
-  background: var(--hoja);
+  grid-template-rows: auto 1fr;
+  grid-template-areas: "tapa carta" "extra carta";
+  background: linear-gradient(to right, var(--tapa) 340px, var(--hoja) 340px);
   box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.35);
   transition: background-color 0.4s var(--suave);
 }
 
-/* Tapa */
 .tapa {
+  grid-area: tapa;
   background: var(--tapa);
   color: var(--tapa-texto);
-  padding: 56px 36px 48px 40px;
+  padding: 56px 36px 0 40px;
   transition: background-color 0.4s var(--suave);
 }
+.tapa-extra { grid-area: extra; padding-top: 0; padding-bottom: 48px; }
 
 .godet {
   width: 190px;
@@ -175,25 +197,18 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--movimiento); ou
 .idiomas li { display: flex; justify-content: space-between; gap: 12px; }
 .idiomas em { font-style: normal; color: var(--tapa-tenue); }
 
-/* Muestras de pigmento */
+/* Muestra de pigmento: solo marca lo que está en curso */
 .pan {
   flex: none;
-  width: 22px;
-  height: 22px;
+  width: 13px;
+  height: 13px;
   border-radius: 50%;
-  background: var(--tono);
-  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.5), 0 1px 2px color-mix(in srgb, var(--tapa) 28%, transparent);
-  transition: background-color 0.4s var(--suave);
+  background: var(--movimiento);
+  box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.45);
 }
-.pan.chica { width: 13px; height: 13px; box-shadow: inset 0 0 0 1.5px rgba(255, 255, 255, 0.45); }
-.pan.t1 { --tono: var(--tono-1); }
-.pan.t2 { --tono: var(--tono-2); }
-.pan.t3 { --tono: var(--tono-3); }
-.pan.t4 { --tono: var(--tono-4); }
-.pan.mov { --tono: var(--movimiento); }
 
-/* Cuerpo */
-.carta { padding: 56px 56px 48px 52px; display: flex; flex-direction: column; gap: 38px; }
+/* Carta */
+.carta { grid-area: carta; padding: 56px 56px 48px 52px; display: flex; flex-direction: column; gap: 38px; }
 
 .seccion > h2 {
   display: flex;
@@ -210,24 +225,18 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--movimiento); ou
 
 .perfil p { max-width: 68ch; font-size: 17px; line-height: 1.62; }
 
-.entradas { padding-left: 34px; display: grid; gap: 22px; }
+.entradas { display: grid; gap: 22px; }
 .entrada header { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 16px; align-items: baseline; }
 .entrada h3 { font-size: 17.5px; font-weight: 700; color: var(--tapa); line-height: 1.35; }
-.entrada .lugar { grid-column: 1; color: var(--tinta-suave); font-size: 15px; }
+.entrada .lugar { grid-column: 1; color: var(--tinta-suave); font-size: 15px; text-wrap: pretty; }
 .entrada .fecha { grid-row: 1; grid-column: 2; font-size: 14px; color: var(--tinta-suave); font-variant-numeric: tabular-nums; white-space: nowrap; }
-.entrada ul { list-style: none; margin-top: 8px; display: grid; gap: 5px; }
-.entrada li { position: relative; padding-left: 16px; max-width: 72ch; }
-.entrada li::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  top: 0.68em;
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--tono-3);
-}
-.entrada a.cert { color: var(--tapa); font-size: 13.5px; font-weight: 600; }
+/* Viñetas con ::marker y no con elementos posicionados: así el PDF conserva el orden de
+   lectura (cargo y luego sus logros). */
+.entrada ul { margin: 8px 0 0 1.1em; display: grid; gap: 5px; }
+.entrada li { padding-left: 4px; max-width: 72ch; text-wrap: pretty; }
+.entrada li::marker { color: var(--tono-3); }
+.entrada h3 a { color: inherit; text-decoration-color: color-mix(in srgb, var(--tapa) 45%, transparent); }
+.entrada h3 a .icono { width: 0.8em; height: 0.8em; margin-left: 4px; vertical-align: -0.05em; }
 
 .estudios { gap: 14px; }
 .estudios .entrada h3 { font-size: 16.5px; }
@@ -241,20 +250,117 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--movimiento); ou
 
 .pie { max-width: 1120px; margin: -28px auto 40px; padding: 0 24px; font-size: 13px; color: var(--tinta-suave); }
 
+/* Ventana de descarga con vista previa (solo pantalla) */
+.oculto { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+dialog.descarga {
+  margin: auto;
+  border: 0;
+  padding: 0;
+  width: min(940px, calc(100% - 32px));
+  max-height: calc(100dvh - 32px);
+  background: var(--hoja);
+  color: var(--tinta);
+  box-shadow: 0 30px 80px -24px rgba(0, 0, 0, 0.55);
+}
+dialog.descarga[open] { animation: aparecer 0.28s var(--suave); }
+dialog.descarga::backdrop { background: color-mix(in srgb, var(--tapa) 60%, transparent); }
+@keyframes aparecer { from { opacity: 0; transform: translateY(10px); } }
+
+.descarga-cuerpo { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 380px); }
+.descarga-texto { padding: 36px 36px 30px; display: flex; flex-direction: column; gap: 16px; }
+.descarga-texto h2 { font-family: var(--display); font-weight: 700; font-size: 26px; line-height: 1.15; color: var(--tapa); }
+.descarga-nota { color: var(--tinta-suave); font-size: 15px; }
+
+.opciones { border: 0; display: grid; gap: 10px; }
+.opcion {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 12px;
+  padding: 14px 16px;
+  border: 1px solid color-mix(in srgb, var(--tinta-suave) 45%, var(--linea));
+  background: color-mix(in srgb, var(--hoja) 70%, #fff);
+  cursor: pointer;
+  transition: border-color 0.2s var(--suave), box-shadow 0.2s var(--suave);
+}
+.opcion:hover { border-color: var(--tono-3); }
+.opcion.elegida { border-color: var(--tapa); box-shadow: inset 0 0 0 1px var(--tapa); }
+.opcion:has(input:focus-visible) { outline: 2px solid var(--movimiento); outline-offset: 2px; }
+.opcion input { accent-color: var(--tapa); margin-top: 5px; width: 16px; height: 16px; }
+.opcion span { font-size: 14.5px; line-height: 1.45; color: var(--tinta-suave); }
+.opcion b { display: block; font-size: 16px; color: var(--tapa); margin-bottom: 2px; }
+.opcion em { font-style: normal; font-weight: 600; color: var(--tinta); }
+
+.acciones { margin-top: auto; padding-top: 8px; display: flex; gap: 12px; justify-content: flex-end; align-items: center; }
+.boton-secundario {
+  padding: 10px 18px;
+  border: 1px solid color-mix(in srgb, var(--tinta-suave) 45%, var(--linea));
+  border-radius: 999px;
+  background: none;
+  font: inherit;
+  font-weight: 600;
+  color: var(--tinta);
+  cursor: pointer;
+}
+.boton-secundario:hover { border-color: var(--tinta-suave); }
+
+.vista {
+  margin: 0;
+  padding: 28px;
+  background: var(--tapa);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.4s var(--suave);
+}
+.vista img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: calc(100dvh - 120px);
+  object-fit: contain;
+  background: #fff;
+  box-shadow: 0 14px 30px -12px rgba(0, 0, 0, 0.6);
+}
+.vista-error { color: var(--tapa-texto); font-size: 14px; text-align: center; }
+
 @media screen and (max-width: 760px) {
-  .barra { flex-wrap: wrap; padding: 14px 16px 0; }
-  .hoja { grid-template-columns: minmax(0, 1fr); margin: 14px 0 32px; box-shadow: none; }
-  .tapa { padding: 36px 24px; }
-  .godet { width: 150px; height: 150px; margin-bottom: 26px; }
-  .nombre { font-size: 34px; }
-  .carta { padding: 36px 22px; gap: 30px; }
-  .entradas { padding-left: 0; }
+  .barra { padding: 14px 16px 0; }
+  .barra .descargar { flex: 1 1 100%; }
+  .hoja {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto;
+    grid-template-areas: "tapa" "carta" "extra";
+    margin: 14px 0 32px;
+    background: var(--hoja);
+    box-shadow: none;
+  }
+  .tapa { padding: 28px 22px 24px; }
+  .tapa-extra { padding-top: 4px; padding-bottom: 32px; }
+  .tapa-extra h2:first-child { margin-top: 24px; }
+  .godet { width: 104px; height: 104px; padding: 4px; margin-bottom: 18px; }
+  .nombre { font-size: 32px; }
+  .tapa h2 { margin-top: 26px; }
+  .carta { padding: 32px 22px; gap: 30px; }
   .entrada header { grid-template-columns: minmax(0, 1fr); }
-  .entrada .fecha { grid-row: auto; grid-column: 1; }
+  .entrada .fecha { grid-row: 3; grid-column: 1; }
+  .descarga-cuerpo { grid-template-columns: minmax(0, 1fr); }
+  .descarga-texto { padding: 24px 20px 0; gap: 14px; }
+  .descarga-texto h2 { font-size: 22px; }
+  .vista { padding: 14px; }
+  .vista img { max-height: 26vh; width: auto; }
+  .acciones {
+    position: sticky;
+    bottom: 0;
+    margin: 0 -20px;
+    padding: 12px 20px 16px;
+    background: var(--hoja);
+    border-top: 1px solid var(--linea);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  * { transition: none !important; }
+  * { transition: none !important; animation: none !important; }
 }
 
 /* ---------- Impresión: compacta, una hoja carta ---------- */
@@ -262,8 +368,8 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--movimiento); ou
 
 @media print {
   html { background: none; }
-  body { font-size: 9.5pt; line-height: 1.36; }
-  .barra, .pie, .solo-pantalla { display: none !important; }
+  body { font-size: 9.8pt; line-height: 1.36; }
+  .barra, .pie, .solo-pantalla, dialog { display: none !important; }
 
   .hoja {
     width: 8.5in;
@@ -271,34 +377,35 @@ a:focus-visible, button:focus-visible { outline: 2px solid var(--movimiento); ou
     max-width: none;
     margin: 0;
     grid-template-columns: 2.72in 1fr;
+    background: linear-gradient(to right, var(--tapa) 2.72in, var(--hoja) 2.72in);
     box-shadow: none;
     /* Sin overflow oculto: si el contenido no cabe, sale una 2.ª página y build.py falla. */
   }
-  .tapa { padding: 0.42in 0.34in 0.3in 0.4in; }
-  .godet { width: 1.5in; height: 1.5in; padding: 5px; margin-bottom: 0.26in; }
+  .tapa { padding: 0.42in 0.34in 0 0.4in; }
+  .tapa-extra { padding-top: 0; padding-bottom: 0.3in; }
+  .godet { width: 1.36in; height: 1.36in; padding: 4px; margin-bottom: 0.22in; }
   .nombre { font-size: 25pt; }
   .rol { margin-top: 0.14in; font-size: 10pt; line-height: 1.35; }
-  .rumbo { margin-top: 0.12in; font-size: 9.4pt; gap: 7px; }
+  .rumbo { margin-top: 0.12in; font-size: 9.6pt; gap: 7px; }
   .rumbo .pan { margin-top: 3px; }
-  .tapa h2 { font-size: 12.5pt; margin: 0.24in 0 0.07in; padding-bottom: 0.05in; }
+  .tapa h2 { font-size: 12.5pt; margin: 0.2in 0 0.06in; padding-bottom: 0.05in; }
   .tapa ul { gap: 0.06in; }
   .contacto span { font-size: 8.2pt; }
+  .contacto a, .contacto strong { font-size: 9.3pt; }
   .grupos li { line-height: 1.38; }
 
-  .pan { width: 0.2in; height: 0.2in; }
-  .pan.chica { width: 0.13in; height: 0.13in; }
+  .pan { width: 0.13in; height: 0.13in; }
 
   .carta { padding: 0.42in 0.5in 0.3in 0.46in; gap: 0.18in; }
   .seccion > h2 { font-size: 14.5pt; gap: 9px; margin-bottom: 0.08in; }
-  .perfil p { font-size: 9.6pt; line-height: 1.42; max-width: none; }
-  .entradas { padding-left: 0.29in; gap: 0.08in; }
+  .perfil p { font-size: 9.9pt; line-height: 1.42; max-width: none; }
+  .entradas { gap: 0.09in; }
   .estudios { gap: 0.06in; }
-  .entrada h3, .estudios .entrada h3 { font-size: 10.4pt; }
-  .entrada .lugar { font-size: 9.2pt; }
-  .entrada .fecha { font-size: 8.8pt; }
+  .entrada h3, .estudios .entrada h3 { font-size: 10.5pt; }
+  .entrada h3 .icono { display: none; }
+  .entrada .lugar { font-size: 9.3pt; }
+  .entrada .fecha { font-size: 8.9pt; }
   .entrada ul { margin-top: 0.03in; gap: 0.015in; }
-  .entrada li { padding-left: 12px; max-width: none; }
-  .entrada li::before { width: 4px; height: 4px; top: 0.62em; }
-  .entrada a.cert { font-size: 8.4pt; }
+  .entrada li { max-width: none; }
   .pendiente { white-space: nowrap; }
 }
